@@ -1,0 +1,8 @@
+server.port: 8001
+
+
+spring:
+  application:
+    name: transaction
+  jackson:
+    property-naming-strategy: SNAKE_CASE
