@@ -37,7 +37,7 @@ public class Consumer {
 
 	public static Consumer mapFromDTO(ConsumerDTO consumerDTO) {
 		User user = new User();
-		user.setId(consumerDTO.getUser_id());
+		user.setId(consumerDTO.getUserId());
 		return new Consumer(consumerDTO.getId(), consumerDTO.getUsername(), user);
 	}
 

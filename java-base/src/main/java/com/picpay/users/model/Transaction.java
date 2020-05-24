@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.picpay.users.model.dto.TransactionDTO;
@@ -31,10 +31,10 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	private User payee;
 	
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	private User payer;
 	
 	private Double value;
@@ -44,13 +44,13 @@ public class Transaction {
 
 	public static Transaction mapFromDTO(TransactionDTO transactionDTO) {
 		User payee = new User();
-		payee.setId(transactionDTO.getPayee_id());
+		payee.setId(transactionDTO.getPayeeId());
 
 		User payer = new User();
-		payer.setId(transactionDTO.getPayer_id());
+		payer.setId(transactionDTO.getPayerId());
 
 		return new Transaction(transactionDTO.getId(), payee, payer, transactionDTO.getValue(),
-				transactionDTO.getTransaction_date());
+				transactionDTO.getTransactionDate());
 	}
 
 	public static TransactionDTO mapFromEntity(Transaction transaction) {

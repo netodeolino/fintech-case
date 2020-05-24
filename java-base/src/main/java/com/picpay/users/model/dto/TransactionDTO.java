@@ -22,14 +22,14 @@ public class TransactionDTO {
 	private Long id;
 	
 	@NotNull(message = "Payee cannot be null")
-	private Long payee_id;
+	private Long payeeId;
 	
 	@NotNull(message = "Payer cannot be null")
-	private Long payer_id;
+	private Long payerId;
 	
 	@NotNull(message = "Value cannot be null")
 	private Double value;
 	
-	private Date transaction_date;
+	private Date transactionDate;
 
 }

@@ -44,7 +44,7 @@ public class Seller {
 	public static Seller mapFromDTO(SellerDTO sellerDTO) {
 		User user = new User();
 		user.setId(sellerDTO.getUser_id());
-		return new Seller(sellerDTO.getId(), sellerDTO.getSocial_name(), sellerDTO.getFantasy_name(),
+		return new Seller(sellerDTO.getId(), sellerDTO.getSocialName(), sellerDTO.getFantasyName(),
 				sellerDTO.getCnpj(), sellerDTO.getUsername(), user);
 	}
 

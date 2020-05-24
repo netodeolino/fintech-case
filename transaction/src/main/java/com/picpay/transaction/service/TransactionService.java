@@ -13,7 +13,7 @@ public class TransactionService {
 	private final Double VALOR_MAX_TRANSACTION = 100.0;
 
 	public ResponseEntity<String> validate(TransactionDTO transactionDTO) {
-		if (transactionDTO.getPayee_id() == transactionDTO.getPayer_id()) {
+		if (transactionDTO.getPayeeId() == transactionDTO.getPayerId()) {
 			return new ResponseEntity<>(Constants.UNAUTHORIZED, HttpStatus.UNAUTHORIZED);
 		}
 		

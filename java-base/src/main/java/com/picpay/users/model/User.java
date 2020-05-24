@@ -41,7 +41,7 @@ public class User {
 	private String password;
 
 	public static User mapFromDTO(UserDTO userDTO) {
-		return new User(userDTO.getId(), userDTO.getFull_name(), userDTO.getCpf(), userDTO.getPhone_number(),
+		return new User(userDTO.getId(), userDTO.getFullName(), userDTO.getCpf(), userDTO.getPhoneNumber(),
 				userDTO.getEmail(), userDTO.getPassword());
 	}
 

@@ -15,8 +15,8 @@ import lombok.ToString;
 @AllArgsConstructor
 public class TransactionDTO {
 
-	private Long payee_id;
-	private Long payer_id;
+	private Long payeeId;
+	private Long payerId;
 	private Double value;
 
 }

@@ -24,6 +24,8 @@ hs_err_pid*
 
 *.DS_Store
 *.settings**
-java-base/.classpat
+java-base/.classpath
+java-base/target/
 .factorypath
 .project
+

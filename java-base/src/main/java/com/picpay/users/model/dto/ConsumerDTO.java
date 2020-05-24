@@ -23,6 +23,6 @@ public class ConsumerDTO {
 	private String username;
 
 	@NotNull(message = "UserId cannot be null")
-	private Long user_id;
+	private Long userId;
 
 }

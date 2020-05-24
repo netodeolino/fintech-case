@@ -20,9 +20,9 @@ public class SellerDTO {
 	private Long id;
 
 	@NotNull(message = "SocialName cannot be null")
-	private String social_name;
+	private String socialName;
 
-	private String fantasy_name;
+	private String fantasyName;
 
 	@NotNull(message = "Cnpj cannot be null")
 	private String cnpj;

@@ -20,12 +20,12 @@ public class UserDTO {
 	private Long id;
 
 	@NotNull(message = "FullName cannot be null")
-	private String full_name;
+	private String fullName;
 
 	@NotNull(message = "Cpf cannot be null")
 	private String cpf;
 
-	private String phone_number;
+	private String phoneNumber;
 	
 	@NotNull(message = "Email cannot be null")
 	private String email;

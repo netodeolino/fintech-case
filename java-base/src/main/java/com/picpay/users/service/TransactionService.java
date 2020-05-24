@@ -3,6 +3,7 @@ package com.picpay.users.service;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -28,6 +29,9 @@ public class TransactionService {
 	@Autowired
 	private TransactionRepository transactionRepository;
 
+	@Value("${TRAN_URL:http://127.0.0.1:8001}")
+	private String TRAN_URL;
+
 	private RestTemplate restTemplate;
 
 	public TransactionService() {
@@ -37,18 +41,18 @@ public class TransactionService {
 	public TransactionDTO transaction(TransactionDTO transactionDTO) {
 		HttpHeaders headersRequest = new HttpHeaders();
 		headersRequest.setContentType(MediaType.APPLICATION_JSON_UTF8);
-
+		
 		JSONObject transJson = new JSONObject();
-		transJson.put("payee_id", transactionDTO.getPayee_id());
-		transJson.put("payer_id", transactionDTO.getPayer_id());
+		transJson.put("payee_id", transactionDTO.getPayeeId());
+		transJson.put("payer_id", transactionDTO.getPayerId());
 		transJson.put("value", transactionDTO.getValue());
 
 		HttpEntity<String> httpEntity = new HttpEntity<>(transJson.toJSONString(), headersRequest);
 
 		try {
-			this.restTemplate.exchange("http://127.0.0.1:8001/transactions/validate", HttpMethod.POST, httpEntity, String.class);
+			this.restTemplate.exchange(this.TRAN_URL + "/transactions/validate", HttpMethod.POST, httpEntity, String.class);
 
-			transactionDTO.setTransaction_date(new Date());
+			transactionDTO.setTransactionDate(new Date());
 			Transaction transactionSaved = this.transactionRepository.save(Transaction.mapFromDTO(transactionDTO));
 
 			return Transaction.mapFromEntity(transactionSaved);

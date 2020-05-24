@@ -1,0 +1,34 @@
+version: '3.4'
+services:
+  users-api-java:
+    container_name: users-api-java
+    build:
+      context: java-base
+      dockerfile: users.Dockerfile
+    depends_on:
+      - users-db-mysql
+    ports:
+      - "8000:8000"
+    environment:
+      - NOOP=
+      - DB_URL=users-db-mysql:3306
+      - TRAN_URL=http://transaction-api-java:8001
+
+  transaction-api-java:
+    container_name: transaction-api-java
+    build:
+      context: transaction
+      dockerfile: transaction.Dockerfile
+    ports:
+      - "8001:8001"
+
+  users-db-mysql:
+    container_name: users-db-mysql
+    build:
+      context: java-base
+      dockerfile: mysql.Dockerfile
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=users
+      - MYSQL_ROOT_PASSWORD=root

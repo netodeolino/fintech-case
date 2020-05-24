@@ -16,7 +16,7 @@ RUN mvn package -Dmaven.test.skip=true && \
 
 FROM openjdk:8-slim
 
-COPY --from=packager /run/users.jar /var/picpay/transaction/transaction.jar
+COPY --from=packager /run/transaction.jar /var/picpay/transaction/transaction.jar
 COPY --from=packager /docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN chmod +x /docker-entrypoint.sh
