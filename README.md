@@ -1,10 +1,10 @@
-## Desafio PicPay Backend Java
+## Challenge Backend Java
 
-#### java-base
-- Serviço com o desafio
+#### users
+- Service base
 
 #### transaction
-- Serviço de autorização de transferência
+- Service for authorize transactions
 
-#### Executar
+#### Run
 - docker-compose up --build

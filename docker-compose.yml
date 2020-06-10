@@ -3,7 +3,7 @@ services:
   users-api-java:
     container_name: users-api-java
     build:
-      context: java-base
+      context: users
       dockerfile: users.Dockerfile
     depends_on:
       - users-db-mysql
@@ -25,7 +25,7 @@ services:
   users-db-mysql:
     container_name: users-db-mysql
     build:
-      context: java-base
+      context: users
       dockerfile: mysql.Dockerfile
     ports:
       - "3306:3306"

@@ -2,4 +2,4 @@
 
 set -e
 
-exec java -jar /var/picpay/transaction/transaction.jar
+exec java -jar /var/challenge/transaction/transaction.jar

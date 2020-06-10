@@ -8,7 +8,7 @@
 		<version>2.3.0.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.picpay</groupId>
+	<groupId>com.challenge</groupId>
 	<artifactId>transaction</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>transaction</name>
@@ -54,7 +54,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-                    <mainClass>com.picpay.transaction.TransactionApplication</mainClass>
+                    <mainClass>com.challenge.transaction.TransactionApplication</mainClass>
                 </configuration>
 			</plugin>
 		</plugins>
