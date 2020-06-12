@@ -19,7 +19,7 @@ public class TransactionService {
 	public ResponseEntity<String> validate(TransactionDTO transactionDTO) {
 		logger.info("Validate: {}", transactionDTO.toString());
 
-		if (transactionDTO.getPayeeId() == transactionDTO.getPayerId()) {
+		if (transactionDTO.getPayeeId().equals(transactionDTO.getPayerId())) {
 			return new ResponseEntity<>(Constants.UNAUTHORIZED, HttpStatus.UNAUTHORIZED);
 		}
 		

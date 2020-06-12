@@ -16,7 +16,7 @@ import com.challenge.users.util.Constants;
 @Service
 public class SellerService {
 
-	Logger logger = LoggerFactory.getLogger(SellerService.class);
+	Logger log = LoggerFactory.getLogger(SellerService.class);
 
 	@Autowired
 	private SellerRepository sellerRepository;
@@ -25,7 +25,7 @@ public class SellerService {
 	private UserRepository userRepository;
 
 	public SellerDTO save(Long userId, SellerDTO sellerDTO) {
-		logger.info("Save: {}, {}", userId, sellerDTO.toString());
+		log.info("Save: {}, {}", userId, sellerDTO.toString());
 
 		this.userRepository.findById(userId).orElseThrow(() -> new NotFoundException(Constants.USER_NOT_FOUND));
 
@@ -37,7 +37,7 @@ public class SellerService {
 	}
 
 	public SellerDTO findByUserId(Long userId) {
-		logger.info("Find by user id: {}", userId);
+		log.info("Find by user id: {}", userId);
 
 		return this.sellerRepository.findByUserId(userId).map(sel -> {
 			return Seller.mapFromEntity(sel);

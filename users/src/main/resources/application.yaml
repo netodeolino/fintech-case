@@ -4,8 +4,10 @@ server.port: 8000
 spring:
   application:
     name: users
+
   jackson:
     property-naming-strategy: SNAKE_CASE
+
   jpa:
     show-sql: true
     hibernate:
@@ -13,7 +15,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+        dialect: org.hibernate.dialect.MySQL5Dialect
 
   datasource:
     url: jdbc:mysql://root:root@${DB_URL:localhost}/users?useSsl=false

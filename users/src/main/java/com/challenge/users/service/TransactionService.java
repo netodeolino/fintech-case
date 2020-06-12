@@ -28,7 +28,7 @@ import net.minidev.json.JSONObject;
 @Service
 public class TransactionService {
 
-	Logger logger = LoggerFactory.getLogger(TransactionService.class);
+	Logger log = LoggerFactory.getLogger(TransactionService.class);
 
 	@Autowired
 	private TransactionRepository transactionRepository;
@@ -43,7 +43,7 @@ public class TransactionService {
 	}
 
 	public TransactionDTO transaction(TransactionDTO transactionDTO) {
-		logger.info("Transaction: {}", transactionDTO.toString());
+		log.info("Transaction: {}", transactionDTO.toString());
 
 		HttpHeaders headersRequest = new HttpHeaders();
 		headersRequest.setContentType(MediaType.APPLICATION_JSON_UTF8);
@@ -78,7 +78,7 @@ public class TransactionService {
 	}
 
 	public TransactionDTO findById(Long transactionId) {
-		logger.info("Find by id: {}", transactionId);
+		log.info("Find by id: {}", transactionId);
 
 		Transaction transaction = this.transactionRepository.findById(transactionId).map(tran -> tran)
 				.orElseThrow(() -> new NotFoundException(Constants.TRANSACTION_NOT_FOUND));

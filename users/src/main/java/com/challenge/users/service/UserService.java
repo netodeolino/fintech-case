@@ -22,7 +22,7 @@ import com.challenge.users.util.Constants;
 @Service
 public class UserService {
 
-	Logger logger = LoggerFactory.getLogger(UserService.class);
+	Logger log = LoggerFactory.getLogger(UserService.class);
 
 	@Autowired
 	private UserRepository userRepository;
@@ -34,7 +34,7 @@ public class UserService {
 	private SellerService sellerService;
 
 	public List<User> list(Optional<String> q) {
-		logger.info("List users by query: {}", q.orElse("blank value"));
+		log.info("List users by query: {}", q.orElse("blank value"));
 
 		if (q.isPresent()) {
 			Optional<List<User>> optFullName = this.userRepository.findByFullNameStartingWithIgnoreCase(q.get());
@@ -58,7 +58,7 @@ public class UserService {
 	}
 
 	public UserAccountsDTO findById(Long userId) {
-		logger.info("Find by id: {}", userId);
+		log.info("Find by id: {}", userId);
 
 		return this.userRepository.findById(userId).map(user -> {
 			ConsumerDTO consumerDTO = this.consumerService.findByUserId(userId);

@@ -16,7 +16,7 @@ import com.challenge.users.util.Constants;
 @Service
 public class ConsumerService {
 
-	Logger logger = LoggerFactory.getLogger(ConsumerService.class);
+	Logger log = LoggerFactory.getLogger(ConsumerService.class);
 
 	@Autowired
 	private ConsumerRepository consumerRepository;
@@ -25,7 +25,7 @@ public class ConsumerService {
 	private UserRepository userRepository;
 
 	public ConsumerDTO save(ConsumerDTO consumerDTO) {
-		logger.info("Save: {}", consumerDTO.toString());
+		log.info("Save: {}", consumerDTO.toString());
 
 		this.userRepository.findById(consumerDTO.getUserId())
 				.orElseThrow(() -> new NotFoundException(Constants.USER_NOT_FOUND));
@@ -38,7 +38,7 @@ public class ConsumerService {
 	}
 
 	public ConsumerDTO findByUserId(long userId) {
-		logger.info("Find by user id: {}", userId);
+		log.info("Find by user id: {}", userId);
 
 		return this.consumerRepository.findByUserId(userId).map(cons -> {
 			return Consumer.mapFromEntity(cons);

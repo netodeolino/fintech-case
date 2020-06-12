@@ -10,7 +10,6 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - NOOP=
       - DB_URL=users-db-mysql:3306
       - TRAN_URL=http://transaction-api-java:8001
 
