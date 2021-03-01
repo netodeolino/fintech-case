@@ -1,58 +1,68 @@
 package com.challenge.users.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import com.challenge.users.model.User;
+import com.challenge.users.model.dto.ConsumerDTO;
+import com.challenge.users.model.dto.SellerDTO;
+import com.challenge.users.model.dto.UserAccountsDTO;
+import com.challenge.users.repository.UserRepository;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.challenge.users.model.User;
-import com.challenge.users.model.dto.UserAccountsDTO;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import com.challenge.users.repository.UserRepository;
+import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class UserServiceTests {
 
-	private User user;
+	@Mock
+	private ConsumerService consumerService;
 
-	@MockBean
+	@Mock
+	private SellerService sellerService;
+
+	@Mock
 	private UserRepository userRepository;
 
-	@Autowired
+	@InjectMocks
 	private UserService userService;
-
-	@Before
-	public void setup() {
-		this.user = new User(1L, "PicPay", "12345678901", "88993393232", "picpay@email.com", "12345678");
-
-		when(this.userRepository.findById(anyLong())).thenReturn(Optional.of(this.user));
-		when(this.userRepository.findAll()).thenReturn(new ArrayList<User>());
-		when(this.userRepository.findByUserName(any())).thenReturn(Optional.of(new ArrayList<User>()));
-		when(this.userRepository.findByFullNameStartingWithIgnoreCase(any())).thenReturn(Optional.of(new ArrayList<User>()));
-	}
 
 	@Test
 	public void testList() {
-		List<User> users = this.userService.list(Optional.of("pic"));
-		
+		// given
+		List<User> users = userService.list(Optional.of("pic"));
+
+		// when
+		when(userRepository.findAll()).thenReturn(emptyList());
+
+		// then
 		assertThat(users.size()).isEqualTo(0);
 	}
 
 	@Test
 	public void testFindById() {
-		UserAccountsDTO uAccountsDTO = this.userService.findById(1L);
-		assertThat(uAccountsDTO.getUser().getId()).isEqualTo(this.user.getId());
+		// given
+		Long userId = 1L;
+		User user = new User(1L, "PicPay", "12345678901", "88993393232", "picpay@email.com", "12345678");
+		ConsumerDTO consumerDTO = new ConsumerDTO(1L, "pic", userId);
+		SellerDTO sellerDTO = new SellerDTO(1L, "pic", "pay", "123", "pic", userId);
+
+		// when
+		when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+		when(consumerService.findByUserId(userId)).thenReturn(consumerDTO);
+		when(sellerService.findByUserId(userId)).thenReturn(sellerDTO);
+
+		UserAccountsDTO uAccountsDTO = userService.findById(userId);
+
+		// then
+		assertThat(uAccountsDTO.getUser().getId()).isEqualTo(user.getId());
 	}
 }

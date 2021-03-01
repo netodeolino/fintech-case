@@ -1,26 +1,5 @@
 version: '3.4'
 services:
-  users-api-java:
-    container_name: users-api-java
-    build:
-      context: users
-      dockerfile: users.Dockerfile
-    depends_on:
-      - users-db-mysql
-    ports:
-      - "8000:8000"
-    environment:
-      - DB_URL=users-db-mysql:3306
-      - TRAN_URL=http://transaction-api-java:8001
-
-  transaction-api-java:
-    container_name: transaction-api-java
-    build:
-      context: transaction
-      dockerfile: transaction.Dockerfile
-    ports:
-      - "8001:8001"
-
   users-db-mysql:
     container_name: users-db-mysql
     build:
@@ -31,3 +10,34 @@ services:
     environment:
       - MYSQL_DATABASE=users
       - MYSQL_ROOT_PASSWORD=root
+
+  users-cache-redis:
+    container_name: users-cache-redis
+    image: redis
+    command: redis-server
+    ports:
+      - "6379:6379"
+
+  transaction-api-java:
+    container_name: transaction-api-java
+    build:
+      context: transaction
+      dockerfile: transaction.Dockerfile
+    ports:
+      - "8001:8001"
+
+  users-api-java:
+    container_name: users-api-java
+    build:
+      context: users
+      dockerfile: users.Dockerfile
+    depends_on:
+      - users-db-mysql
+      - users-cache-redis
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_URL=users-db-mysql:3306
+      - TRAN_URL=http://transaction-api-java:8001
+      - REDIS_URL=users-cache-redis
+      - REDIS_PORT=6379

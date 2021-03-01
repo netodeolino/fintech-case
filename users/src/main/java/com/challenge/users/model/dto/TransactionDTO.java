@@ -1,5 +1,6 @@
 package com.challenge.users.model.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
@@ -17,7 +18,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionDTO {
+public class TransactionDTO implements Serializable {
 
 	private Long id;
 	

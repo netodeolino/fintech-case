@@ -1,56 +1,81 @@
 package com.challenge.users.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
-
-import java.net.URISyntaxException;
-import java.util.Date;
-import java.util.Optional;
-
+import com.challenge.users.cliente.TransactionClient;
 import com.challenge.users.model.Transaction;
 import com.challenge.users.model.User;
 import com.challenge.users.model.dto.TransactionDTO;
-import org.junit.Before;
+import com.challenge.users.repository.TransactionRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.challenge.users.repository.TransactionRepository;
+import java.util.Date;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class TransactionServiceTests {
 
-	private Transaction transaction;
-
-	@MockBean
+	@Mock
 	private TransactionRepository transactionRepository;
 
-	@Autowired
+	@Mock
+	private TransactionClient transactionClient;
+
+	@InjectMocks
 	private TransactionService transactionService;
 
-	@Before
-	public void setup() throws JsonProcessingException, URISyntaxException {
+	@Test
+	public void testFindById() {
+		// given
+		Long transactionId = 1L;
+
 		User userPayee = new User();
 		userPayee.setId(1L);
 
 		User userPayer = new User();
 		userPayer.setId(2L);
 
-		this.transaction = new Transaction(1L, userPayee, userPayer, 100.0, new Date());
+		Transaction transaction = new Transaction(transactionId, userPayee, userPayer, 100.0, new Date());
 
-		when(this.transactionRepository.findById(anyLong())).thenReturn(Optional.of(this.transaction));
+		// when
+		when(transactionRepository.findById(transactionId)).thenReturn(Optional.of(transaction));
+
+		TransactionDTO transactionDTO = transactionService.findById(transactionId);
+
+		// then
+		assertThat(transactionDTO.getId()).isEqualTo(transaction.getId());
 	}
 
 	@Test
-	public void testFindById() {
-		TransactionDTO transactionDTO = this.transactionService.findById(1L);
+	public void testTransaction() {
+		// given
+		User userPayee = new User();
+		userPayee.setId(1L);
 
-		assertThat(transactionDTO.getId()).isEqualTo(this.transaction.getId());
+		User userPayer = new User();
+		userPayer.setId(2L);
+
+		Transaction transaction = new Transaction(1L, userPayee, userPayer, 100.0, new Date());
+
+		TransactionDTO transactionDTO = Transaction.mapFromEntity(transaction);
+
+		// when
+		doNothing().when(transactionClient).validateTransaction(transactionDTO);
+		when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
+
+		TransactionDTO transactionDTOSaved = transactionService.transaction(transactionDTO);
+
+		// then
+		assertThat(transactionDTO.getValue()).isEqualTo(transactionDTOSaved.getValue());
 	}
+
 }
