@@ -17,7 +17,9 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
 
   datasource:
-    url: jdbc:mysql://root:root@${DB_URL:localhost}/users?useSsl=false
+    hiraki:
+      initialization-fail-timeout: 0
+    url: jdbc:mysql://root:root@${DB_URL:localhost}/users?autoReconnect=true&useSsl=false
 
   cache:
     type: redis
