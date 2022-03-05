@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.challenge.users.application.exception.NotFoundException;
+import com.challenge.users.application.port.in.UserUseCase;
+import com.challenge.users.application.port.out.UserDatabasePort;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +19,15 @@ import com.challenge.users.domain.dto.ConsumerDTO;
 import com.challenge.users.domain.dto.SellerDTO;
 import com.challenge.users.domain.dto.UserAccountsDTO;
 import com.challenge.users.domain.dto.UserDTO;
-import com.challenge.users.adapter.out.database.UserRepository;
 import com.challenge.users.application.exception.Constants;
 
 @Service
-public class UserService {
+public class UserService implements UserUseCase {
 
 	private Logger log = LoggerFactory.getLogger(UserService.class);
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserDatabasePort userDatabasePort;
 
 	@Autowired
 	private ConsumerService consumerService;
@@ -41,12 +42,12 @@ public class UserService {
 		log.info("List users by query: {}", q.orElse("blank value"));
 
 		if (q.isPresent()) {
-			Optional<List<User>> optFullName = this.userRepository.findByFullNameStartingWithIgnoreCase(q.get());
+			Optional<List<User>> optFullName = userDatabasePort.findByFullNameStartingWithIgnoreCase(q.get());
 			if (optFullName.isPresent()) {
 				return optFullName.get();
 			}
 
-			Optional<List<User>> optUserName = this.userRepository.findByUserName(q.get());
+			Optional<List<User>> optUserName = userDatabasePort.findByUserName(q.get());
 			if (optUserName.isPresent()) {
 				return optUserName.get();
 			}
@@ -54,17 +55,17 @@ public class UserService {
 			return Collections.emptyList();
 		}
 
-		return userRepository.findAll();
+		return userDatabasePort.findAll();
 	}
 
 	public User save(User user) {
-		return userRepository.save(user);
+		return userDatabasePort.save(user);
 	}
 
 	public UserAccountsDTO findById(Long userId) {
 		log.info("Find by id: {}", userId);
 
-		return userRepository.findById(userId).map(user -> {
+		return userDatabasePort.findById(userId).map(user -> {
 			ConsumerDTO consumerDTO = consumerService.findByUserId(userId);
 			SellerDTO sellerDTO = sellerService.findByUserId(userId);
 

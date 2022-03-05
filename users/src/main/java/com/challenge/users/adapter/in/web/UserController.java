@@ -3,13 +3,13 @@ package com.challenge.users.adapter.in.web;
 import java.util.List;
 import java.util.Optional;
 
+import com.challenge.users.application.port.in.UserUseCase;
 import com.challenge.users.domain.entity.User;
 import com.challenge.users.domain.dto.ConsumerDTO;
 import com.challenge.users.domain.dto.SellerDTO;
 import com.challenge.users.domain.dto.UserAccountsDTO;
 import com.challenge.users.application.service.ConsumerService;
 import com.challenge.users.application.service.SellerService;
-import com.challenge.users.application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
 	@Autowired
-	private UserService userService;
+	private UserUseCase userUseCase;
 
 	@Autowired
 	private ConsumerService consumerService;
@@ -36,12 +36,12 @@ public class UserController {
 
 	@GetMapping
 	public ResponseEntity<List<User>> list(@RequestParam Optional<String> q) {
-		return ResponseEntity.ok(this.userService.list(q));
+		return ResponseEntity.ok(userUseCase.list(q));
 	}
 
 	@PostMapping
 	public ResponseEntity<User> save(@RequestBody User user) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.save(user));
+		return ResponseEntity.status(HttpStatus.CREATED).body(userUseCase.save(user));
 	}
 
 	@PostMapping("/consumers")
@@ -56,6 +56,6 @@ public class UserController {
 
 	@GetMapping("/{user_id}")
 	public ResponseEntity<UserAccountsDTO> findById(@PathVariable Long user_id) {
-		return ResponseEntity.ok(this.userService.findById(user_id));
+		return ResponseEntity.ok(userUseCase.findById(user_id));
 	}
 }
