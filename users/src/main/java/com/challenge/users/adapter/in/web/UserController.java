@@ -3,13 +3,13 @@ package com.challenge.users.adapter.in.web;
 import java.util.List;
 import java.util.Optional;
 
+import com.challenge.users.application.port.in.ConsumerUseCase;
+import com.challenge.users.application.port.in.SellerUseCase;
 import com.challenge.users.application.port.in.UserUseCase;
 import com.challenge.users.domain.entity.User;
 import com.challenge.users.domain.dto.ConsumerDTO;
 import com.challenge.users.domain.dto.SellerDTO;
 import com.challenge.users.domain.dto.UserAccountsDTO;
-import com.challenge.users.application.service.ConsumerService;
-import com.challenge.users.application.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +29,10 @@ public class UserController {
 	private UserUseCase userUseCase;
 
 	@Autowired
-	private ConsumerService consumerService;
+	private ConsumerUseCase consumerUseCase;
 
 	@Autowired
-	private SellerService sellerService;
+	private SellerUseCase sellerUseCase;
 
 	@GetMapping
 	public ResponseEntity<List<User>> list(@RequestParam Optional<String> q) {
@@ -46,12 +46,12 @@ public class UserController {
 
 	@PostMapping("/consumers")
 	public ResponseEntity<ConsumerDTO> saveConsumer(@RequestBody ConsumerDTO consumerDTO) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(this.consumerService.save(consumerDTO));
+		return ResponseEntity.status(HttpStatus.CREATED).body(consumerUseCase.save(consumerDTO));
 	}
 
 	@PostMapping("/sellers/{user_id}")
 	public ResponseEntity<SellerDTO> saveSeller(@PathVariable Long user_id, @RequestBody SellerDTO sellerDTO) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(this.sellerService.save(user_id, sellerDTO));
+		return ResponseEntity.status(HttpStatus.CREATED).body(sellerUseCase.save(user_id, sellerDTO));
 	}
 
 	@GetMapping("/{user_id}")
