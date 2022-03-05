@@ -2,10 +2,10 @@ package com.challenge.users.config;
 
 import javax.validation.ConstraintViolationException;
 
-import com.challenge.users.exception.ErrorResponse;
-import com.challenge.users.exception.NotFoundException;
-import com.challenge.users.exception.UnauthorizedException;
-import com.challenge.users.exception.UnprocessableException;
+import com.challenge.users.application.exception.ErrorResponse;
+import com.challenge.users.application.exception.NotFoundException;
+import com.challenge.users.application.exception.UnauthorizedException;
+import com.challenge.users.application.exception.UnprocessableException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
