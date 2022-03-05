@@ -2,6 +2,7 @@ package com.challenge.users.application.service;
 
 import com.challenge.users.application.exception.NotFoundException;
 import com.challenge.users.application.exception.UnprocessableException;
+import com.challenge.users.application.port.in.ConsumerUseCase;
 import com.challenge.users.application.port.out.ConsumerDatabasePort;
 import com.challenge.users.application.port.out.UserDatabasePort;
 import org.modelmapper.ModelMapper;
@@ -15,7 +16,7 @@ import com.challenge.users.domain.dto.ConsumerDTO;
 import com.challenge.users.application.exception.Constants;
 
 @Service
-public class ConsumerService {
+public class ConsumerService implements ConsumerUseCase {
 
 	private Logger log = LoggerFactory.getLogger(ConsumerService.class);
 
