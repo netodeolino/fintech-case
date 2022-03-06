@@ -20,14 +20,16 @@ public class ConsumerService implements ConsumerUseCase {
 
 	private Logger log = LoggerFactory.getLogger(ConsumerService.class);
 
-	@Autowired
 	private ConsumerDatabasePort consumerDatabasePort;
-
-	@Autowired
 	private UserDatabasePort userDatabasePort;
+	private ModelMapper modelMapper;
 
 	@Autowired
-	private ModelMapper modelMapper;
+	public ConsumerService(ConsumerDatabasePort consumerDatabasePort, UserDatabasePort userDatabasePort, ModelMapper modelMapper) {
+		this.consumerDatabasePort = consumerDatabasePort;
+		this.userDatabasePort = userDatabasePort;
+		this.modelMapper = modelMapper;
+	}
 
 	public ConsumerDTO save(ConsumerDTO consumerDTO) {
 		log.info("Save: {}", consumerDTO.toString());

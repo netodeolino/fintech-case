@@ -20,14 +20,16 @@ public class SellerService implements SellerUseCase {
 
 	private Logger log = LoggerFactory.getLogger(SellerService.class);
 
-	@Autowired
 	private SellerDatabasePort sellerDatabasePort;
-
-	@Autowired
 	private UserDatabasePort userDatabasePort;
+	private ModelMapper modelMapper;
 
 	@Autowired
-	private ModelMapper modelMapper;
+	public SellerService(SellerDatabasePort sellerDatabasePort, UserDatabasePort userDatabasePort, ModelMapper modelMapper) {
+		this.sellerDatabasePort = sellerDatabasePort;
+		this.userDatabasePort = userDatabasePort;
+		this.modelMapper = modelMapper;
+	}
 
 	public SellerDTO save(Long userId, SellerDTO sellerDTO) {
 		log.info("Save: {}, {}", userId, sellerDTO.toString());

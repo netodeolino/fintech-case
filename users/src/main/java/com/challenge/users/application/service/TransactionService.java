@@ -1,8 +1,8 @@
 package com.challenge.users.application.service;
 
-import com.challenge.users.adapter.out.web.TransactionClient;
 import com.challenge.users.application.exception.NotFoundException;
 import com.challenge.users.application.port.in.TransactionUseCase;
+import com.challenge.users.application.port.out.TransactionClientPort;
 import com.challenge.users.application.port.out.TransactionDatabasePort;
 import com.challenge.users.domain.entity.Transaction;
 import com.challenge.users.domain.dto.TransactionDTO;
@@ -20,19 +20,25 @@ public class TransactionService implements TransactionUseCase {
 
 	private Logger log = LoggerFactory.getLogger(TransactionService.class);
 
-	@Autowired
 	private TransactionDatabasePort transactionDatabasePort;
-
-	@Autowired
-	private TransactionClient transactionClient;
-
-	@Autowired
+	private TransactionClientPort transactionClientPort;
 	private ModelMapper modelMapper;
+
+	@Autowired
+	public TransactionService(
+			TransactionDatabasePort transactionDatabasePort,
+			TransactionClientPort transactionClientPort,
+			ModelMapper modelMapper
+	) {
+		this.transactionDatabasePort = transactionDatabasePort;
+		this.transactionClientPort = transactionClientPort;
+		this.modelMapper = modelMapper;
+	}
 
 	public TransactionDTO transaction(TransactionDTO transactionDTO) {
 		log.info("Transaction: {}", transactionDTO.toString());
 
-		transactionClient.validateTransaction(transactionDTO);
+		transactionClientPort.validateTransaction(transactionDTO);
 
 		transactionDTO.setTransactionDate(new Date());
 

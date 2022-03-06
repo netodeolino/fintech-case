@@ -12,50 +12,48 @@ import com.challenge.users.domain.dto.SellerDTO;
 import com.challenge.users.domain.dto.UserAccountsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("users")
 public class UserController {
 
-	@Autowired
 	private UserUseCase userUseCase;
-
-	@Autowired
 	private ConsumerUseCase consumerUseCase;
-
-	@Autowired
 	private SellerUseCase sellerUseCase;
 
+	@Autowired
+	public UserController(UserUseCase userUseCase, ConsumerUseCase consumerUseCase, SellerUseCase sellerUseCase) {
+		this.userUseCase = userUseCase;
+		this.consumerUseCase = consumerUseCase;
+		this.sellerUseCase = sellerUseCase;
+	}
+
 	@GetMapping
-	public ResponseEntity<List<User>> list(@RequestParam Optional<String> q) {
-		return ResponseEntity.ok(userUseCase.list(q));
+	public List<User> list(@RequestParam Optional<String> q) {
+		return userUseCase.list(q);
 	}
 
 	@PostMapping
-	public ResponseEntity<User> save(@RequestBody User user) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(userUseCase.save(user));
+	@ResponseStatus(HttpStatus.CREATED)
+	public User save(@RequestBody User user) {
+		return userUseCase.save(user);
 	}
 
 	@PostMapping("/consumers")
-	public ResponseEntity<ConsumerDTO> saveConsumer(@RequestBody ConsumerDTO consumerDTO) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(consumerUseCase.save(consumerDTO));
+	@ResponseStatus(HttpStatus.CREATED)
+	public ConsumerDTO saveConsumer(@RequestBody ConsumerDTO consumerDTO) {
+		return consumerUseCase.save(consumerDTO);
 	}
 
 	@PostMapping("/sellers/{user_id}")
-	public ResponseEntity<SellerDTO> saveSeller(@PathVariable Long user_id, @RequestBody SellerDTO sellerDTO) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(sellerUseCase.save(user_id, sellerDTO));
+	@ResponseStatus(HttpStatus.CREATED)
+	public SellerDTO saveSeller(@PathVariable Long user_id, @RequestBody SellerDTO sellerDTO) {
+		return sellerUseCase.save(user_id, sellerDTO);
 	}
 
 	@GetMapping("/{user_id}")
-	public ResponseEntity<UserAccountsDTO> findById(@PathVariable Long user_id) {
-		return ResponseEntity.ok(userUseCase.findById(user_id));
+	public UserAccountsDTO findById(@PathVariable Long user_id) {
+		return userUseCase.findById(user_id);
 	}
 }
