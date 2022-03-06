@@ -26,17 +26,21 @@ public class UserService implements UserUseCase {
 
 	private Logger log = LoggerFactory.getLogger(UserService.class);
 
-	@Autowired
 	private UserDatabasePort userDatabasePort;
-
-	@Autowired
 	private ConsumerService consumerService;
-
-	@Autowired
 	private SellerService sellerService;
+	private ModelMapper modelMapper;
 
 	@Autowired
-	private ModelMapper modelMapper;
+	public UserService(
+			UserDatabasePort userDatabasePort, ConsumerService consumerService,
+			SellerService sellerService, ModelMapper modelMapper
+	) {
+		this.userDatabasePort = userDatabasePort;
+		this.consumerService = consumerService;
+		this.sellerService = sellerService;
+		this.modelMapper = modelMapper;
+	}
 
 	public List<User> list(Optional<String> q) {
 		log.info("List users by query: {}", q.orElse("blank value"));

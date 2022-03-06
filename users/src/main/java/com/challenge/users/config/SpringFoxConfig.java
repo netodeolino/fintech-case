@@ -18,11 +18,12 @@ import java.util.Collections;
 @EnableSwagger2
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfig {
+
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.challenge.users.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.challenge.users.adapter.in.web"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
@@ -32,7 +33,7 @@ public class SpringFoxConfig {
         return new ApiInfo(
                 "Challenge REST API",
                 "Challenge API for backend Java",
-                "0.0.1",
+                "0.0.2",
                 "Terms of service",
                 new Contact("Neto Deolino", "https://netodeolino.github.io", "netodeolino@gmail.com"),
                 "License of API", "https://github.com/netodeolino/fintech-challenge", Collections.emptyList());

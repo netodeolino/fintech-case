@@ -1,5 +1,6 @@
 package com.challenge.users.adapter.out.web;
 
+import com.challenge.users.application.port.out.TransactionClientPort;
 import com.challenge.users.domain.dto.TransactionDTO;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class TransactionClient {
+public class TransactionClient implements TransactionClientPort {
 
     private Logger log = LoggerFactory.getLogger(TransactionClient.class);
 
