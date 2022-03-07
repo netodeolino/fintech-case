@@ -1,4 +1,4 @@
-package com.challenge.transaction.util;
+package com.challenge.transaction.application.exception;
 
 public class Constants {
 

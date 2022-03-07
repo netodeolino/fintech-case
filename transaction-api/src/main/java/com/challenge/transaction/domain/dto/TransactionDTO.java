@@ -1,4 +1,4 @@
-package com.challenge.transaction.dto;
+package com.challenge.transaction.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

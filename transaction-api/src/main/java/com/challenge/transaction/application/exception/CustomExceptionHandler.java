@@ -1,11 +1,5 @@
-package com.challenge.users.config;
+package com.challenge.transaction.application.exception;
 
-import javax.validation.ConstraintViolationException;
-
-import com.challenge.users.application.exception.ErrorResponse;
-import com.challenge.users.application.exception.NotFoundException;
-import com.challenge.users.application.exception.UnauthorizedException;
-import com.challenge.users.application.exception.UnprocessableException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,12 +12,6 @@ public class CustomExceptionHandler {
 	public final ResponseEntity<Object> handleException(Exception ex) {
 		ErrorResponse errorRes = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
 		return new ResponseEntity<>(errorRes, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
-	@ExceptionHandler(value = { ConstraintViolationException.class })
-	public final ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
-		ErrorResponse errorRes = new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(), ex.getMessage());
-		return new ResponseEntity<>(errorRes, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@ExceptionHandler(value = { NotFoundException.class })
@@ -43,4 +31,5 @@ public class CustomExceptionHandler {
 		ErrorResponse errorRes = new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(), ex.getMessage());
 		return new ResponseEntity<>(errorRes, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
+
 }
