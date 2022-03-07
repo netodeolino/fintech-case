@@ -22,7 +22,7 @@ services:
   transaction-api-java:
     container_name: transaction-api-java
     build:
-      context: transaction
+      context: transaction-api
       dockerfile: transaction.Dockerfile
     ports:
       - "8001:8001"
@@ -30,7 +30,7 @@ services:
   users-api-java:
     container_name: users-api-java
     build:
-      context: users
+      context: users-api
       dockerfile: users.Dockerfile
     restart: on-failure
     depends_on:
