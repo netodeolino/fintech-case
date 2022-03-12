@@ -3,7 +3,7 @@ services:
   users-db-mysql:
     container_name: users-db-mysql
     build:
-      context: users
+      context: users-api
       dockerfile: mysql.Dockerfile
     restart: always
     ports:

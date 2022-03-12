@@ -1,9 +1,12 @@
 package com.challenge.users.application.port.out;
 
 import com.challenge.users.domain.dto.TransactionDTO;
+import com.challenge.users.domain.dto.ValidationDTO;
+
+import java.util.concurrent.CompletableFuture;
 
 public interface TransactionClientPort {
 
-    void validateTransaction(TransactionDTO transactionDTO);
+    CompletableFuture<ValidationDTO> validateTransaction(TransactionDTO transactionDTO);
 
 }

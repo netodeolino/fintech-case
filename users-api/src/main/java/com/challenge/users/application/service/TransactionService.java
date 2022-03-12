@@ -1,9 +1,11 @@
 package com.challenge.users.application.service;
 
 import com.challenge.users.application.exception.NotFoundException;
+import com.challenge.users.application.exception.UnprocessableException;
 import com.challenge.users.application.port.in.TransactionUseCase;
 import com.challenge.users.application.port.out.TransactionClientPort;
 import com.challenge.users.application.port.out.TransactionDatabasePort;
+import com.challenge.users.domain.dto.ValidationDTO;
 import com.challenge.users.domain.entity.Transaction;
 import com.challenge.users.domain.dto.TransactionDTO;
 import com.challenge.users.application.exception.Constants;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class TransactionService implements TransactionUseCase {
@@ -38,13 +42,18 @@ public class TransactionService implements TransactionUseCase {
 	public TransactionDTO transaction(TransactionDTO transactionDTO) {
 		log.info("Transaction: {}", transactionDTO.toString());
 
-		transactionClientPort.validateTransaction(transactionDTO);
+		try {
+			validateTransaction(transactionDTO);
 
-		transactionDTO.setTransactionDate(new Date());
+			transactionDTO.setTransactionDate(new Date());
 
-		Transaction transaction = modelMapper.map(transactionDTO, Transaction.class);
-		transaction = transactionDatabasePort.save(transaction);
-		return modelMapper.map(transaction, TransactionDTO.class);
+			Transaction transaction = modelMapper.map(transactionDTO, Transaction.class);
+			transaction = transactionDatabasePort.save(transaction);
+
+			return modelMapper.map(transaction, TransactionDTO.class);
+		} catch (InterruptedException | ExecutionException | UnprocessableException e) {
+			throw new UnprocessableException(Constants.UNPROCESSABLE);
+		}
 	}
 
 	public TransactionDTO findById(Long transactionId) {
@@ -56,6 +65,11 @@ public class TransactionService implements TransactionUseCase {
 
 		return new TransactionDTO(transaction.getId(), transaction.getPayee().getId(), transaction.getPayer().getId(),
 				transaction.getValue(), transaction.getTransactionDate());
+	}
+
+	private void validateTransaction(TransactionDTO transactionDTO) throws ExecutionException, InterruptedException {
+		CompletableFuture<ValidationDTO> completableFuture = transactionClientPort.validateTransaction(transactionDTO);
+		if (!completableFuture.get().isValid()) throw new UnprocessableException(Constants.UNPROCESSABLE);
 	}
 
 }

@@ -1,9 +1,10 @@
 package com.challenge.transaction.application.in;
 
 import com.challenge.transaction.domain.dto.TransactionDTO;
+import com.challenge.transaction.domain.dto.ValidationDTO;
 
 public interface TransactionUseCase {
 
-    String validate(TransactionDTO transactionDTO);
+    ValidationDTO validate(TransactionDTO transactionDTO);
 
 }

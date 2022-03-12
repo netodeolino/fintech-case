@@ -15,13 +15,13 @@ public class CustomExceptionHandler {
 	}
 
 	@ExceptionHandler(value = { NotFoundException.class })
-	public final ResponseEntity<Object> handleUUnauthorizedException(NotFoundException ex) {
+	public final ResponseEntity<Object> handleUnauthorizedException(NotFoundException ex) {
 		ErrorResponse errorRes = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
 		return new ResponseEntity<>(errorRes, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(value = { UnauthorizedException.class })
-	public final ResponseEntity<Object> handleUUnauthorizedException(UnauthorizedException ex) {
+	public final ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex) {
 		ErrorResponse errorRes = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
 		return new ResponseEntity<>(errorRes, HttpStatus.UNAUTHORIZED);
 	}

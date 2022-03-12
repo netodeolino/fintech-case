@@ -2,14 +2,18 @@ package com.challenge.users.adapter.out.web;
 
 import com.challenge.users.application.port.out.TransactionClientPort;
 import com.challenge.users.domain.dto.TransactionDTO;
+import com.challenge.users.domain.dto.ValidationDTO;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class TransactionClient implements TransactionClientPort {
@@ -25,8 +29,9 @@ public class TransactionClient implements TransactionClientPort {
         this.restTemplate = new RestTemplate();
     }
 
-    @Cacheable(value = "transactions", key = "#transactionDTO")
-    public void validateTransaction(TransactionDTO transactionDTO) {
+    @Async
+    @Cacheable(value = "transactions", key = "#transactionDTO.payeeId + #transactionDTO.payerId + #transactionDTO.value")
+    public CompletableFuture<ValidationDTO> validateTransaction(TransactionDTO transactionDTO) {
         log.info("Transaction: {}", transactionDTO.toString());
 
         HttpHeaders headersRequest = new HttpHeaders();
@@ -39,7 +44,10 @@ public class TransactionClient implements TransactionClientPort {
 
         HttpEntity<String> httpEntity = new HttpEntity<>(transJson.toJSONString(), headersRequest);
 
-        restTemplate.exchange(TRAN_URL + "/transactions/validate", HttpMethod.POST, httpEntity, String.class);
+        ResponseEntity<ValidationDTO> validationDTO = restTemplate
+                .exchange(TRAN_URL + "/transactions/validate", HttpMethod.POST, httpEntity, ValidationDTO.class);
+
+        return CompletableFuture.completedFuture(validationDTO.getBody());
     }
 
 }
