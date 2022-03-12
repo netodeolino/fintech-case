@@ -19,7 +19,7 @@ spring:
   datasource:
     hiraki:
       initialization-fail-timeout: 0
-    url: jdbc:mysql://root:root@${DB_URL:localhost}/users?autoReconnect=true&useSsl=false&enabledTLSProtocols=TLSv1.2
+    url: jdbc:mysql://root:root@${DB_URL:localhost}/users?autoReconnect=true&useSSL=false&enabledTLSProtocols=TLSv1.2
 
   cache:
     type: redis

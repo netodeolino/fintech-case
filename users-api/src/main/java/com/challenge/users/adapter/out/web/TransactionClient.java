@@ -1,17 +1,17 @@
 package com.challenge.users.adapter.out.web;
 
+import com.challenge.users.adapter.out.web.feign.TransactionFeignClient;
+import com.challenge.users.application.exception.Constants;
+import com.challenge.users.application.exception.UnprocessableException;
 import com.challenge.users.application.port.out.TransactionClientPort;
 import com.challenge.users.domain.dto.TransactionDTO;
 import com.challenge.users.domain.dto.ValidationDTO;
-import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -20,34 +20,32 @@ public class TransactionClient implements TransactionClientPort {
 
     private Logger log = LoggerFactory.getLogger(TransactionClient.class);
 
-    @Value("${TRAN_URL:http://127.0.0.1:8001}")
-    private String TRAN_URL;
+    private TransactionFeignClient transactionFeignClient;
 
-    private RestTemplate restTemplate;
+    @Autowired
+    public TransactionClient(TransactionFeignClient transactionFeignClient) {
+        this.transactionFeignClient = transactionFeignClient;
+    }
 
-    public TransactionClient() {
-        this.restTemplate = new RestTemplate();
+    @Cacheable(value = "transactions", key = "#transactionDTO.payeeId + #transactionDTO.payerId + #transactionDTO.value")
+    public ValidationDTO validateTransaction(TransactionDTO transactionDTO) {
+        log.info("Transaction: {}", transactionDTO.toString());
+
+        CompletableFuture<ValidationDTO> validFuture = futureValidateTransaction(transactionDTO);
+
+        try {
+            return validFuture.get();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e.getCause());
+            throw new UnprocessableException(Constants.UNPROCESSABLE);
+        }
     }
 
     @Async
-    @Cacheable(value = "transactions", key = "#transactionDTO.payeeId + #transactionDTO.payerId + #transactionDTO.value")
-    public CompletableFuture<ValidationDTO> validateTransaction(TransactionDTO transactionDTO) {
-        log.info("Transaction: {}", transactionDTO.toString());
-
-        HttpHeaders headersRequest = new HttpHeaders();
-        headersRequest.setContentType(MediaType.APPLICATION_JSON_UTF8);
-
-        JSONObject transJson = new JSONObject();
-        transJson.put("payee_id", transactionDTO.getPayeeId());
-        transJson.put("payer_id", transactionDTO.getPayerId());
-        transJson.put("value", transactionDTO.getValue());
-
-        HttpEntity<String> httpEntity = new HttpEntity<>(transJson.toJSONString(), headersRequest);
-
-        ResponseEntity<ValidationDTO> validationDTO = restTemplate
-                .exchange(TRAN_URL + "/transactions/validate", HttpMethod.POST, httpEntity, ValidationDTO.class);
-
-        return CompletableFuture.completedFuture(validationDTO.getBody());
+    private CompletableFuture<ValidationDTO> futureValidateTransaction(TransactionDTO transactionDTO) {
+        ValidationDTO validationDTO = transactionFeignClient.validateTransaction(transactionDTO);
+        log.info("Validated: {}", validationDTO.toString());
+        return CompletableFuture.completedFuture(validationDTO);
     }
 
 }
