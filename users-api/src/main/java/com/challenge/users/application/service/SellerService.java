@@ -18,11 +18,11 @@ import com.challenge.users.application.exception.Constants;
 @Service
 public class SellerService implements SellerUseCase {
 
-	private Logger log = LoggerFactory.getLogger(SellerService.class);
+	private final Logger log = LoggerFactory.getLogger(SellerService.class);
 
-	private SellerDatabasePort sellerDatabasePort;
-	private UserDatabasePort userDatabasePort;
-	private ModelMapper modelMapper;
+	private final SellerDatabasePort sellerDatabasePort;
+	private final UserDatabasePort userDatabasePort;
+	private final ModelMapper modelMapper;
 
 	@Autowired
 	public SellerService(SellerDatabasePort sellerDatabasePort, UserDatabasePort userDatabasePort, ModelMapper modelMapper) {

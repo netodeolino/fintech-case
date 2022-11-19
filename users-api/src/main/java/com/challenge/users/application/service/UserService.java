@@ -24,12 +24,12 @@ import com.challenge.users.application.exception.Constants;
 @Service
 public class UserService implements UserUseCase {
 
-	private Logger log = LoggerFactory.getLogger(UserService.class);
+	private final Logger log = LoggerFactory.getLogger(UserService.class);
 
-	private UserDatabasePort userDatabasePort;
-	private ConsumerService consumerService;
-	private SellerService sellerService;
-	private ModelMapper modelMapper;
+	private final UserDatabasePort userDatabasePort;
+	private final ConsumerService consumerService;
+	private final SellerService sellerService;
+	private final ModelMapper modelMapper;
 
 	@Autowired
 	public UserService(

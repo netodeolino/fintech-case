@@ -33,7 +33,7 @@ public class SpringFoxConfig {
         return new ApiInfo(
                 "Challenge REST API",
                 "Challenge API for backend Java",
-                "0.0.2",
+                "0.0.3",
                 "Terms of service",
                 new Contact("Neto Deolino", "https://netodeolino.github.io", "netodeolino@gmail.com"),
                 "License of API", "https://github.com/netodeolino/fintech-challenge", Collections.emptyList());

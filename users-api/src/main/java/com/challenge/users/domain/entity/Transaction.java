@@ -3,10 +3,14 @@ package com.challenge.users.domain.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import com.challenge.users.domain.enums.TransactionStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
@@ -39,5 +43,8 @@ public class Transaction {
 	
 	@JsonFormat(pattern = "dd-MM-yyy@HH:mm:ss.SSSZ")
 	private Date transactionDate;
+
+	@Enumerated(EnumType.STRING)
+	private TransactionStatus status;
 
 }

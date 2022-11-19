@@ -33,4 +33,6 @@ public class TransactionDTO implements Serializable {
 	
 	private Date transactionDate;
 
+	private String status;
+
 }

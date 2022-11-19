@@ -18,11 +18,11 @@ import com.challenge.users.application.exception.Constants;
 @Service
 public class ConsumerService implements ConsumerUseCase {
 
-	private Logger log = LoggerFactory.getLogger(ConsumerService.class);
+	private final Logger log = LoggerFactory.getLogger(ConsumerService.class);
 
-	private ConsumerDatabasePort consumerDatabasePort;
-	private UserDatabasePort userDatabasePort;
-	private ModelMapper modelMapper;
+	private final ConsumerDatabasePort consumerDatabasePort;
+	private final UserDatabasePort userDatabasePort;
+	private final ModelMapper modelMapper;
 
 	@Autowired
 	public ConsumerService(ConsumerDatabasePort consumerDatabasePort, UserDatabasePort userDatabasePort, ModelMapper modelMapper) {

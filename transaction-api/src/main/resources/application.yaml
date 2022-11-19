@@ -1,8 +1,30 @@
 server.port: 8001
 
-
 spring:
   application:
     name: transaction
+
   jackson:
     property-naming-strategy: SNAKE_CASE
+
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER:broker}:${KAFKA_PORT:9092}
+    producer:
+      bootstrap: ${KAFKA_SERVER:broker}:${KAFKA_PORT:9092}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      bootstrap: ${KAFKA_SERVER:broker}:${KAFKA_PORT:9092}
+      group-id: group_id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+
+topics:
+  validate-transaction: validate-transaction
+  transaction-validated: transaction-validated

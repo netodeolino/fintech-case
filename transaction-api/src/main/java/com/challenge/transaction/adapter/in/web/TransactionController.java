@@ -1,6 +1,6 @@
 package com.challenge.transaction.adapter.in.web;
 
-import com.challenge.transaction.application.in.TransactionUseCase;
+import com.challenge.transaction.application.port.in.TransactionUseCase;
 import com.challenge.transaction.domain.dto.ValidationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +14,7 @@ import com.challenge.transaction.domain.dto.TransactionDTO;
 @RequestMapping("transactions")
 public class TransactionController {
 
-	private TransactionUseCase transactionUseCase;
+	private final TransactionUseCase transactionUseCase;
 
 	@Autowired
 	public TransactionController(TransactionUseCase transactionUseCase) {

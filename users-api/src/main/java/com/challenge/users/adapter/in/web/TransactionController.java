@@ -13,7 +13,7 @@ import com.challenge.users.domain.dto.TransactionDTO;
 @RequestMapping("transactions")
 public class TransactionController {
 
-	private TransactionUseCase transactionUseCase;
+	private final TransactionUseCase transactionUseCase;
 
 	@Autowired
 	public TransactionController(TransactionUseCase transactionUseCase) {
@@ -27,8 +27,8 @@ public class TransactionController {
 	}
 
 	@GetMapping("/{transaction_id}")
-	public TransactionDTO findById(@PathVariable Long transaction_id) {
-		return transactionUseCase.findById(transaction_id);
+	public TransactionDTO findById(@PathVariable("transaction_id") Long transactionId) {
+		return transactionUseCase.findById(transactionId);
 	}
 
 }

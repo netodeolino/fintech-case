@@ -6,5 +6,6 @@ public interface TransactionUseCase {
 
     TransactionDTO transaction(TransactionDTO transactionDTO);
     TransactionDTO findById(Long transactionId);
+    void update(TransactionDTO transactionDTO);
 
 }
